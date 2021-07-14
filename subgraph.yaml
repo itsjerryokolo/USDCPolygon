@@ -1,0 +1,71 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: USDC
+    network: matic
+    source:
+      address: '0xDD9185DB084f5C4fFf3b4f70E7bA62123b812226'
+      abi: USDC
+      startBlock: 5013540
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Contract
+      abis:
+        - name: USDC
+          file: ./abis/USDC.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: AuthorizationCanceled(indexed address,indexed bytes32)
+          handler: handleAuthorizationCanceled
+        - event: AuthorizationUsed(indexed address,indexed bytes32)
+          handler: handleAuthorizationUsed
+        - event: Blacklisted(indexed address)
+          handler: handleBlacklisted
+        - event: MetaTransactionExecuted(address,address,bytes)
+          handler: handleMetaTransactionExecuted
+        - event: Pause()
+          handler: handlePause
+        - event: RescuerChanged(indexed address)
+          handler: handleRescuerChanged
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: UnBlacklisted(indexed address)
+          handler: handleUnBlacklisted
+        - event: Unpause()
+          handler: handleUnpause
+      file: ./src/mapping.ts
+
+  - kind: ethereum/contract
+    name: USDCProxy
+    network: matic
+    source:
+      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
+      abi: USDCProxy
+      startBlock: 5013540
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Contract
+      abis:
+        - name: USDCProxy
+          file: ./abis/USDCProxy.json
+      eventHandlers:
+        - event: ProxyOwnerUpdate(address,address)
+          handler: handleProxyOwnerUpdate
+        - event: ProxyUpdated(indexed address,indexed address)
+          handler: handleProxyUpdated
+      file: ./src/mapping.ts
